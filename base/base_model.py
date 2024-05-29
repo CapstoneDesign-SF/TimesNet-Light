@@ -1,6 +1,5 @@
 import sys
 import warnings
-import pickle
 import numpy as np
 import torch
 import random
@@ -9,7 +8,7 @@ from abc import ABCMeta, abstractmethod
 from tqdm import tqdm
 from scipy.stats import binom
 from ray import tune
-from ray.train import session, Checkpoint
+# from ray.train import session, Checkpoint
 from ray.tune.schedulers import ASHAScheduler
 from functools import partial
 import pickle
