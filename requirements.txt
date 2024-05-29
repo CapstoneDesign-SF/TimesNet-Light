@@ -1,0 +1,18 @@
+# 전체
+Python==3.10.12
+
+# BaseModel
+numpy==1.25.2
+scikit-learn==1.2.2
+scipy==1.11.4
+tqdm==4.66.4
+torch==2.3.0+cu121
+ray==2.23.0
+pickle==4.0
+
+# 데이터로드&학습
+pandas==2.0.3
+numpy==1.25.2
+
+# 모델 저장
+torch==2.3.0+cu121
