@@ -8,14 +8,7 @@ from datetime import datetime
 import time
 
 
-# def get_data(DATA_PATH):
-#     X_train = np.load("./" + DATA_PATH + "/X_train.npy") # for TimesNet training
-#     X_test = np.load("./" + DATA_PATH + "/X_train.npy") # detect anomalies in real time
-#
-#     return X_train, X_test
-
-
-def train_TimesNet(X_train):
+def train_TimesNet(train_data):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     clf = TimesNet(seq_len=100,
@@ -37,26 +30,33 @@ def train_TimesNet(X_train):
                    random_state=42)
 
     print("Training TimesNet")
-    clf.fit(X_train)
+    clf.fit(train_data)
 
     torch.save(clf, 'timesnet.pt')
 
 
-def detect_anomalies(model_name, data):
-    saved_model = torch.load(model_name + ".pt")
+def detect_anomalies(model_name, data):  # anomly detection in real time
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+    saved_model = torch.load(model_name + ".pt", device)
+    saved_model.device = device
+
     score = saved_model.decision_function(data)
     label_ = np.where(score > saved_model.threshold_, 1, 0)
     if 1 in label_:
         print("Annomaly occured at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
-def detect_anomalies_(model_name, X_test):
-    saved_model = torch.load(model_name + ".pt")
+def detect_anomalies_(model_name, test_data):  # for simulating anomaly detection
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    seq_num = len(X_test) // saved_model.seq_len
+    saved_model = torch.load(model_name + ".pt", device)
+    saved_model.device = device
+
+    seq_num = len(test_data) // saved_model.seq_len
 
     for i in range(seq_num):
-        data = X_test[i * saved_model.seq_len: (i + 1) * saved_model.seq_len]  # 0-99, 100-199, 200-299, ...,
+        data = test_data[i * saved_model.seq_len: (i + 1) * saved_model.seq_len]
         score = saved_model.decision_function(data)
         label_ = np.where(score > saved_model.threshold_, 1, 0)
         if 1 in label_:
@@ -68,16 +68,15 @@ def detect_anomalies_(model_name, X_test):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--task", type=str, default="train", help="whether to train before detect anomalies")
-    parser.add_argument("--path", type=str, default="PSM", help="train, test data should be inside this path")
+    parser.add_argument("--data", type=str, default="PSM", help="train, test data should be inside this path")
     parser.add_argument("--model_name", type=str, default="timesnet", help="which model to use")
     opt = parser.parse_args()
 
     if opt.task == "train":
-        # X_train, X_test = get_data(opt.path)
-        X_train = np.load("./" + opt.path + "/X_train.npy")
+        X_train = np.load("./" + opt.data + "/X_train.npy")
         train_TimesNet(X_train)
 
-    X_test = np.load("./" + opt.path + "/X_test.npy")
+    X_test = np.load("./" + opt.data + "/X_test.npy")
 
     # detect_anomalies(opt.model_name, X_test)
     detect_anomalies_(opt.model_name, X_test)
