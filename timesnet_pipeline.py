@@ -8,7 +8,7 @@ from datetime import datetime
 import time
 
 
-def train_TimesNet(train_data):
+def train_TimesNet(train_data, model_name):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     clf = TimesNet(seq_len=100,
@@ -32,7 +32,7 @@ def train_TimesNet(train_data):
     print("Training TimesNet")
     clf.fit(train_data)
 
-    torch.save(clf, 'timesnet.pt')
+    torch.save(clf, model_name+'.pt')
 
 
 def detect_anomalies(model_name, data):  # anomly detection in real time
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     if opt.task == "train":
         X_train = np.load("./" + opt.data + "/X_train.npy")
-        train_TimesNet(X_train)
+        train_TimesNet(X_train, opt.model_name)
 
     X_test = np.load("./" + opt.data + "/X_test.npy")
 
