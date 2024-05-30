@@ -78,5 +78,12 @@ if __name__ == "__main__":
 
     X_test = np.load("./" + opt.data + "/X_test.npy")
 
+    """
+    For real time anomaly detection with real data, use the first of the codes below
+    - delete the annotation mark and add one to the second code
+    
+    For simulating anomaly detection with test data, use the second of the codes below
+    - no need to change
+    """
     # detect_anomalies(opt.model_name, X_test)
     detect_anomalies_(opt.model_name, X_test)
