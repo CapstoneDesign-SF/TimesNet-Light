@@ -29,10 +29,11 @@ def train_TimesNet(train_data, model_name):
                    verbose=2,
                    random_state=42)
 
-    print("Training TimesNet")
+    print("---Training TimesNet---")
     clf.fit(train_data)
 
     torch.save(clf, model_name+'.pt')
+    print("Saved", model_name+".pt\n")
 
 
 def detect_anomalies(model_name, data):  # anomly detection in real time
@@ -47,7 +48,7 @@ def detect_anomalies(model_name, data):  # anomly detection in real time
         print("Annomaly occured at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
-def detect_anomalies_(model_name, test_data):  # for simulating anomaly detection
+def simulate_detecting_anomalies(model_name, test_data):  # for simulating anomaly detection
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     saved_model = torch.load(model_name + ".pt", device)
@@ -85,5 +86,6 @@ if __name__ == "__main__":
     For simulating anomaly detection with test data, use the second of the codes below
     - no need to change
     """
+    print("---Start detecting anomalies---")
     # detect_anomalies(opt.model_name, X_test)
-    detect_anomalies_(opt.model_name, X_test)
+    simulate_detecting_anomalies(opt.model_name, X_test)
