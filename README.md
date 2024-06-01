@@ -8,18 +8,17 @@
 
 
 - Detect Anomalies
-  - Checkout **timesnet_pipeline.py**.
-  - For real time anomaly detection, check the file and follow the instruction.
-  - Modification may be required depending on whether the task to be performed is **real time detection** or **simulation**.
+  - Checkout **timesnet_tasks.py**.
   - Required command line arguments
-    - task: Use "train" for training TimesNet before detection or use "detect" for only detection.
-    - data: Train data and test data should be within this directory.
-    - model: Model name for saving trained model, or detecting with corresponding model.
+    - **task**: Use "train" for training TimesNet before detection or use "detect" for only detection. If you want to try simulating anomaly detection with test data, use "simulate".
+    - data: Data for training TimesNet or detection should be within this directory.
+    - model_name: Model name for saving trained model, or detecting with corresponding model.
     ```
-    python timesnet_pipeline.py --task detect --data PSM --model timesnet
+    python timesnet_pipeline.py --task detect --data PSM_simulation --model_name timesnet
     ```
   - The result is as follows.
     ```
+    ---Start detecting anomalies---
     Anomaly occured at 2024-05-31 00:56:05
     Anomaly occured at 2024-05-31 00:56:05
     Anomaly occured at 2024-05-31 00:56:06
