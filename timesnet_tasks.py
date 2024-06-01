@@ -1,11 +1,9 @@
 import argparse
-
-# import numpy as np
-# import torch
 from timesnet.timesnet import *
 from timesnet.timesnetmodule import *
 from datetime import datetime
 import time
+import os
 
 
 def train_TimesNet(train_data, model_name):
@@ -73,19 +71,23 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", type=str, default="timesnet", help="which model to use")
     opt = parser.parse_args()
 
+    # train and save timesnet for anoamly detection
     if opt.task == "train":
         X_train = np.load("./" + opt.data + "/X_train.npy")
         train_TimesNet(X_train, opt.model_name)
 
-    X_test = np.load("./" + opt.data + "/X_test.npy")
+    # simulate anoamly detection with test data
+    if opt.task == "simulate":
+        X_test = np.load("./" + opt.data + "/X_test.npy")
 
-    """
-    For real time anomaly detection with real data, use the first of the codes below
-    - delete the annotation mark and add one to the second code
-    
-    For simulating anomaly detection with test data, use the second of the codes below
-    - no need to change
-    """
-    print("---Start detecting anomalies---")
-    # detect_anomalies(opt.model_name, X_test)
-    simulate_detecting_anomalies(opt.model_name, X_test)
+        print("---Start simulating anomaly detection---")
+        simulate_detecting_anomalies(opt.model_name, X_test)
+
+    # real-time anomaly detection
+    if opt.task == "detect":
+        path = "./" + opt.data
+
+        print("---Start simulating anomaly detection---")
+        for data in os.listdir(path):
+            data_ = np.load(path + "/" + data)
+            detect_anomalies(opt.model_name, data_)
