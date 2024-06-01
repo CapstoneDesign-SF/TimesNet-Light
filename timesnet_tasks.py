@@ -76,7 +76,7 @@ if __name__ == "__main__":
         X_train = np.load("./" + opt.data + "/X_train.npy")
         train_TimesNet(X_train, opt.model_name)
 
-    # simulate anoamly detection with test data
+    # simulate anomaly detection with test data
     if opt.task == "simulate":
         X_test = np.load("./" + opt.data + "/X_test.npy")
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     if opt.task == "detect":
         path = "./" + opt.data
 
-        print("---Start simulating anomaly detection---")
+        print("---Start detecting anomalies---")
         for data in os.listdir(path):
             data_ = np.load(path + "/" + data)
             detect_anomalies(opt.model_name, data_)
