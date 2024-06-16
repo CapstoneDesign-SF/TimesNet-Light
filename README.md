@@ -14,7 +14,7 @@
     - data: Data for training TimesNet or detection should be within this directory.
     - model_name: Model name for saving trained model, or detecting with corresponding model.
     ```
-    python timesnet_pipeline.py --task detect --data PSM_simulation --model_name timesnet
+    python timesnet_tasks.py --task detect --data PSM_simulation --model_name timesnet
     ```
   - The result is as follows.
     ```
